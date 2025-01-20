@@ -24,9 +24,9 @@ const App = () => {
 
     loadFundingData();
   }, []);
-  // chart one
-  // chart one options
-  const chartOneOptions: ChartOptions = {
+  // Top 15 Funding Rounds Chart
+  // chart options
+  const topChartOptions: ChartOptions = {
     scales: {
       y: {
         beginAtZero: false,
@@ -47,7 +47,7 @@ const App = () => {
             const dataIndex = context.dataIndex;
             const value = dataset.data[dataIndex];
             // There currently is a bug in Prisma, DateTime value need to be transformed to a Date object before pass in as string. https://github.com/prisma/prisma/issues/9516
-            const date = new Date(biggestFundingData[dataIndex].date);
+            const date = new Date(TopFundingData[dataIndex].date);
             return [`Amount: ${value}`, `Date: ${date.toLocaleDateString()}`];
           },
         },
@@ -55,15 +55,15 @@ const App = () => {
     },
   };
   // chart one data
-  const biggestFundingData = [...fundingData]
+  const TopFundingData = [...fundingData]
     .sort((a, b) => b.amount - a.amount)
     .slice(0, 15);
-  const chartOneData = {
-    labels: biggestFundingData.map(item => item.name),
+  const topChartData = {
+    labels: TopFundingData.map(item => item.name),
     datasets: [
       {
         label: "Funding Amounts",
-        data: biggestFundingData.map(item => item.amount),
+        data: TopFundingData.map(item => item.amount),
         backgroundColor: "rgba(75, 192, 192, 0.6)",
         borderColor: "rgba(75, 192, 192, 1)",
         borderWidth: 1,
@@ -71,9 +71,9 @@ const App = () => {
     ],
   };
 
-  // chart two
-  // chart two options
-  const chartTwoOptions: ChartOptions = {
+  // Timeline of All Funding Rounds Chart
+  // chart options
+  const timelineChartOptions: ChartOptions = {
     scales: {
       x: {
         type: "time",
@@ -123,8 +123,8 @@ const App = () => {
     },
   };
 
-  // chart two data
-  const chartTwoData = {
+  // chart data
+  const timelineChartData = {
     labels: fundingData.map(item => item.date),
     datasets: [
       {
@@ -139,9 +139,13 @@ const App = () => {
 
   return (
     <div style={{ width: "90vw", margin: "10px 24px", textAlign: "start" }}>
-      <Chart type="bar" options={chartOneOptions} data={chartOneData} />
+      <Chart type="bar" options={topChartOptions} data={topChartData} />
 
-      <Chart type="bar" options={chartTwoOptions} data={chartTwoData} />
+      <Chart
+        type="bar"
+        options={timelineChartOptions}
+        data={timelineChartData}
+      />
     </div>
   );
 };
