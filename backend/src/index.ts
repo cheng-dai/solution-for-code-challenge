@@ -12,11 +12,13 @@ app.use((_req, res, next) => {
 });
 
 app.get("/funding-rounds", async (req: Request, res: Response) => {
-  const fundingRounds = await prisma.fundingRound.findMany({
-    take: 20,
-  });
+  const fundingRounds = await prisma.fundingRound.findMany({});
   res.json(
-    fundingRounds.map(({ name, amount }) => ({ name, amount: Number(amount) })),
+    fundingRounds.map(({ name, amount, date }) => ({
+      name,
+      amount: Number(amount),
+      date,
+    })),
   );
 });
 
