@@ -1,6 +1,12 @@
-# Result for Motherbrain Full Stack Challenge
+# Solution for Motherbrain Full Stack Challenge
 
-This is the result for the Motherbrain Full Stack Challenge from Cheng.
+This is the solution for the Motherbrain Full Stack Challenge from Cheng.
+
+### How to run the project
+1. Clone the repository.
+2. Run `yarn install` and `yarn dev` in the backend and frontend folders respectively.
+3. Open `http://localhost:5173` in the browser.
+
 
 ### Things I want to improve
 - The zoom performance of the second chart is not ideal. 
