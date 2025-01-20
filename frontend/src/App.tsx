@@ -78,7 +78,7 @@ const App = () => {
       x: {
         type: "time",
         time: {
-          unit: "day",
+          unit: "month",
         },
       },
       y: {
@@ -107,7 +107,6 @@ const App = () => {
       tooltip: {
         callbacks: {
           title: function (context) {
-            console.log(context);
             const dataIndex = context[0].dataIndex;
             return fundingData[dataIndex].name;
           },
