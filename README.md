@@ -1,13 +1,7 @@
-# Motherbrain Full Stack Challenge
+# Result for Motherbrain Full Stack Challenge
 
-1. Clone this repo.
-2. Run `yarn install` and `yarn dev` in the `backend` and `frontend` folders respectively.
-3. You can find the description of the assignment at http://localhost:5173/ once you have completed step #2.
-4. When you are finished with the assignment, send us the link to a public github repo with your solution.
+This is the result for the Motherbrain Full Stack Challenge from Cheng.
 
-Good luck!
-
-### Notes
-
-This repository is a barebones setup with a Node backend and a React frontend. If you really want to, you can tear it all down and start from scratch, but this is meant to get you started immediately.
-Consider installing Prisma extension in your IDE/editor to simplify working with the `schema.prisma` file.
+### Things I want to improve
+- The performance of the second chart is not ideal.
+- The layout of the page is not very mobile-friendly. I would like to find a better way to display the charts on mobile devices.
