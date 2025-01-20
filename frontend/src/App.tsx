@@ -1,16 +1,18 @@
 import { useEffect, useState } from "react";
 import "chart.js/auto";
+import { Chart as ChartJS } from "chart.js";
 import { Chart } from "react-chartjs-2";
-
+import "chartjs-adapter-date-fns";
+import zoomPlugin from "chartjs-plugin-zoom";
 import { fetchFundingRounds } from "./api";
 import { ChartOptions } from "chart.js";
-
 const App = () => {
   const [fundingData, setFundingData] = useState<
     { name: string; amount: number; date: Date }[]
   >([]);
 
   useEffect(() => {
+    ChartJS.register(zoomPlugin);
     const loadFundingData = async () => {
       try {
         const data = await fetchFundingRounds();
@@ -56,6 +58,84 @@ const App = () => {
   const biggestFundingData = [...fundingData]
     .sort((a, b) => b.amount - a.amount)
     .slice(0, 15);
+  const chartOneData = {
+    labels: biggestFundingData.map(item => item.name),
+    datasets: [
+      {
+        label: "Funding Amounts",
+        data: biggestFundingData.map(item => item.amount),
+        backgroundColor: "rgba(75, 192, 192, 0.6)",
+        borderColor: "rgba(75, 192, 192, 1)",
+        borderWidth: 1,
+      },
+    ],
+  };
+
+  // chart two
+  // chart two options
+  const chartTwoOptions: ChartOptions = {
+    scales: {
+      x: {
+        type: "time",
+        time: {
+          unit: "day",
+        },
+      },
+      y: {
+        beginAtZero: false,
+      },
+    },
+    plugins: {
+      title: {
+        display: true,
+        text: "All Funding Rounds",
+        font: {
+          size: 20,
+        },
+      },
+      zoom: {
+        zoom: {
+          wheel: {
+            enabled: true,
+          },
+          pinch: {
+            enabled: true,
+          },
+          mode: "x",
+        },
+      },
+      tooltip: {
+        callbacks: {
+          title: function (context) {
+            console.log(context);
+            const dataIndex = context[0].dataIndex;
+            return fundingData[dataIndex].name;
+          },
+          label: function (context) {
+            const dataset = context.dataset;
+            const dataIndex = context.dataIndex;
+            const value = dataset.data[dataIndex];
+            const date = new Date(fundingData[dataIndex].date);
+            return [`Amount: ${value}`, `Date: ${date.toLocaleDateString()}`];
+          },
+        },
+      },
+    },
+  };
+
+  // chart two data
+  const chartTwoData = {
+    labels: fundingData.map(item => item.date),
+    datasets: [
+      {
+        label: "Funding Amountsss",
+        data: fundingData.map(item => item.amount),
+        backgroundColor: "rgba(75, 192, 192, 0.6)",
+        borderColor: "rgba(75, 192, 192, 1)",
+        borderWidth: 1,
+      },
+    ],
+  };
 
   // const chartData = {
   //   labels: fundingData.map(item => item.name),
@@ -69,19 +149,6 @@ const App = () => {
   //     },
   //   ],
   // };
-
-  const chartOneData = {
-    labels: biggestFundingData.map(item => item.name),
-    datasets: [
-      {
-        label: "Funding Amounts",
-        data: biggestFundingData.map(item => item.amount),
-        backgroundColor: "rgba(75, 192, 192, 0.6)",
-        borderColor: "rgba(75, 192, 192, 1)",
-        borderWidth: 1,
-      },
-    ],
-  };
 
   return (
     <div style={{ width: "80%", margin: "0 auto", textAlign: "start" }}>
@@ -104,7 +171,10 @@ const App = () => {
 
       <h1>Example Chart</h1>
       <p>This is a scaffold to get you started.</p>
-      <Chart type="bar" options={chartOneOptions} data={chartOneData} />
+      <div className="chart-container">
+        <Chart type="bar" options={chartOneOptions} data={chartOneData} />
+      </div>
+      <Chart type="bar" options={chartTwoOptions} data={chartTwoData} />
     </div>
   );
 };
